@@ -8,6 +8,7 @@ const answersForm = document.getElementById('answers-form');
 let seeCountdown = document.getElementById('countdown');
 let seconds = 10;
 
+let randomNumbers = [];
 const userNumbers = [];
 const confirmBtn = document.getElementById('confirmBtn');
 const inputs = document.querySelectorAll('input');
@@ -21,6 +22,7 @@ const timer = setInterval(function () {
             const randomNumber = getRndInteger(1, 50);
             let newLi = document.createElement('li');
             newLi.innerText = randomNumber;
+            randomNumbers.push(randomNumber);
             numbersList.append(newLi);
             counter++;
             // console.log(newLi);
@@ -31,19 +33,50 @@ const timer = setInterval(function () {
         numbersList.classList.add('d-none');
         seeCountdown.classList.add('d-none');
         answersForm.classList.remove('d-none');
-
-        // prendo i valori degli input del form e li metto in un array al click
-        confirmBtn.addEventListener('click', function (event) {
-            for (let i = 0; i < inputs.length; i++) {
-                userNumbers.push(parseInt(inputs[i].value));
-                console.log(userNumbers);
-            }
-            event.preventDefault;
-        });
     }
 }, 1000);
 
+// prendo le risposte dell'utente e le inserisco in un array
+answersForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    console.log(event);
+    for (let i = 0; i < inputs.length; i++) {
+        userNumbers.push(parseInt(inputs[i].value));
+        console.log(userNumbers);
+    }
+    checkAnswer ();
+});
 
+function checkAnswer() {
+    let correctAnswer = 0;  // Conta il numero di risposte corrette
+    let wrongAnswer = [];   // Memorizza i numeri sbagliati
 
+    console.log("Numeri generati: ", randomNumbers);
+    console.log("Numeri inseriti: ", userNumbers);
 
+    // Confronta ogni numero dell'utente con i numeri random
+    for (let i = 0; i < randomNumbers.length; i++) {
+        console.log(`Confronto ${randomNumbers[i]} con ${userNumbers[i]}`);
+        
+        // Verifico che i valori inseriti siano valori numerici
+        if (randomNumbers[i] === userNumbers[i]) {
+            correctAnswer++;  
+        } else {
+            wrongAnswer.push(userNumbers[i]);  // Aggiungi il numero sbagliato all'array
+        }
+    }
 
+    // Mostra il risultato
+    const result = document.getElementById('messageResult');
+    if (correctAnswer === 5) {
+        result.innerHTML = "Congratulazioni, hai indovinato tutti e 5 i numeri. Hai vinto!";
+    } else {
+        result.innerHTML = `Mi dispiace, hai sbagliato i seguenti numeri: ${wrongAnswer.join(', ')}. I numeri esatti erano: ${randomNumbers.join(', ')}.`;
+    }
+}
+
+const resetBtn = document.getElementById('resetBtn');
+
+resetBtn.addEventListener('click', function(event){
+    
+})
