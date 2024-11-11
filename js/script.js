@@ -75,8 +75,20 @@ function checkAnswer() {
     }
 }
 
+// Reset delle variabili
 const resetBtn = document.getElementById('resetBtn');
 
-resetBtn.addEventListener('click', function(event){
+resetBtn.addEventListener('click', function() {
+    randomNumbers = [];       
+    userNumbers.length = 0;   
+    counter = 0;              
+    seconds = 10;             
     
-})
+    // Resetto la ul
+    numbersList.innerHTML = '';  
+    seeCountdown.innerHTML = seconds;  
+    seeCountdown.classList.remove('d-none');  
+    numbersList.classList.remove('d-none');  
+    answersForm.classList.add('d-none');  
+    document.getElementById('messageResult').innerHTML = '';
+});
